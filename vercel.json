@@ -2,7 +2,7 @@
   "builds": [
     {
       "src": "main_with_audio.py",
-      "use": "@vercel/python"
+      "use": "@vercel/python-edge"
     }
   ],
   "routes": [
