@@ -5,10 +5,10 @@
       "use": "@vercel/python"
     }
   ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "main_with_audio.py"
+  "functions": {
+    "main_with_audio.py": {
+      "memory": 1024,
+      "maxDuration": 10
     }
-  ]
+  }
 }
