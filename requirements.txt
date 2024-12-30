@@ -1,0 +1,6 @@
+streamlit
+edge-tts
+langchain-groq
+langchain-core
+python-dotenv
+    

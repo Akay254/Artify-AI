@@ -1,0 +1,14 @@
+{
+  "builds": [
+    {
+      "src": "main_with_audio.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "main_with_audio.py"
+    }
+  ]
+}
