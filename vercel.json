@@ -1,14 +1,14 @@
 {
   "builds": [
     {
-      "src": "main_with_audio.py",
-      "use": "@vercel/python-edge"
+      "src": "Dockerfile",
+      "use": "@vercel/static-build"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "main_with_audio.py"
+      "dest": "/"
     }
   ]
 }
