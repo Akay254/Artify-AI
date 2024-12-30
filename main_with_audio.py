@@ -70,7 +70,7 @@ def stream_text(text, container):  # Stream text character by character  # Prese
     streamed_text = ""
     for word in characters:
         streamed_text += word  # Add one character at a time  # Add words preserving spacing
-        container.markdown(f"<div style='line-height: 1.5;'>{streamed_text}</div>", unsafe_allow_html=True)  # Ensure proper streaming
+        container.markdown(f"<div style='line-height: 1.5; color: #1DB954;'>{streamed_text}</div>", unsafe_allow_html=True)  # Ensure proper streaming
         time.sleep(0.01)  # Adjust speed of streaming
 
 # Streamlit App
@@ -84,10 +84,10 @@ st.markdown(
         background-image: url('https://example.com/musical-background.jpg');
         background-size: cover;
         background-color: black;
-        color: black;
+        color: #1DB954;
     }
     .stMarkdown {
-        color: black !important;
+        color: #1DB954 !important;
     }
     .st-chat-message {
         color: #1DB954 !important;  /* Spotify green for messages */
@@ -102,13 +102,23 @@ st.title("🎵 AI Music Mentor")
 st.header("Your personal AI tutor for all things music 🎶")
 
 # Display chat history
-st.markdown("<hr style='border: 1px solid black;'>", unsafe_allow_html=True)
+st.markdown("<hr style='border: 1px solid #1DB954;'>", unsafe_allow_html=True)
 for message in st.session_state.chat_history:
     with st.chat_message(message["role"]):
         if message["role"] == "ai":
             st.markdown(f"<div style='color: #1DB954;'>{message['content']}</div>", unsafe_allow_html=True)
         else:
             st.markdown(f"<div style='color: #1DB954;'>{message['content']}</div>", unsafe_allow_html=True)
+
+if "user_has_interacted" not in st.session_state:
+    st.session_state.user_has_interacted = False
+
+if not st.session_state.user_has_interacted:
+    st.markdown("### Sample Questions (Suggested Topics):", unsafe_allow_html=True)
+    st.markdown("- How can I improve my finger placement on the piano?", unsafe_allow_html=True)
+    st.markdown("- What is the key signature of 'Fur Elise'?", unsafe_allow_html=True)
+    st.markdown("- Can you explain the basics of music theory?", unsafe_allow_html=True)
+    st.session_state.user_has_interacted = True
 
 user_prompt = st.chat_input("Type your question or share your progress here 🎹:")
 if user_prompt:
