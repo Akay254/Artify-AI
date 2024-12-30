@@ -4,6 +4,7 @@ from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate
 import os
 import asyncio
+import time
 
 # Load environment variables
 from dotenv import load_dotenv
@@ -63,6 +64,15 @@ def generate_ai_response(prompt):
     except Exception as e:
         return f"Unexpected error: {e}"
 
+# Function to stream text one word at a time
+def stream_text(text, container):  # Stream text character by character  # Preserve spaces and format
+    characters = list(text)  # Break text into individual characters, preserving spaces  # Preserve original spacing, including multiple spaces
+    streamed_text = ""
+    for word in characters:
+        streamed_text += word  # Add one character at a time  # Add words preserving spacing
+        container.markdown(f"<div style='line-height: 1.5;'>{streamed_text}</div>", unsafe_allow_html=True)  # Ensure proper streaming
+        time.sleep(0.01)  # Adjust speed of streaming
+
 # Streamlit App
 st.set_page_config(page_title="AI Music Mentor", page_icon="🎵", layout="wide", initial_sidebar_state="collapsed")
 
@@ -100,8 +110,6 @@ for message in st.session_state.chat_history:
         else:
             st.markdown(f"<div style='color: #1DB954;'>{message['content']}</div>", unsafe_allow_html=True)
 
-# Input field for user's message
-# st.markdown("<hr style='border: 1px solid black;'>", unsafe_allow_html=True)
 user_prompt = st.chat_input("Type your question or share your progress here 🎹:")
 if user_prompt:
     # Add user's message to chat and display it
@@ -115,8 +123,9 @@ if user_prompt:
         # Generate audio
         audio_path = asyncio.run(generate_audio(ai_response))
 
-    # Add AI response to chat and play audio first, then display text
+    # Add AI response to chat, play audio, and stream text
     if audio_path:
         with st.chat_message("ai"):
             st.audio(audio_path, format="audio/mp3", start_time=0)
-            st.markdown(f"<div style='color: #1DB954;'>{ai_response}</div>", unsafe_allow_html=True)
+            placeholder = st.empty()  # Placeholder for streaming text
+            stream_text(ai_response, placeholder)
